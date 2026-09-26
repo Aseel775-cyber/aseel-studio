@@ -1,0 +1,1524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aseel Studio — Web Dev & Socials</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #0a0a0f;
+      color: #eaeef2;
+      font-family: 'Inter', sans-serif;
+      line-height: 1.5;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* custom insane expensive background glow */
+    .bg-glow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 20% 30%, rgba(120, 80, 255, 0.15), transparent 50%),
+                  radial-gradient(circle at 80% 70%, rgba(0, 200, 255, 0.12), transparent 55%),
+                  radial-gradient(circle at 50% 100%, rgba(200, 50, 200, 0.08), transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 2;
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 30px;
+    }
+
+    /* header / nav */
+    header {
+      padding: 30px 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+    }
+
+    .brand-mark {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.18), rgba(124, 106, 255, 0.12) 30%, rgba(13, 13, 20, 0.95) 90%);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      box-shadow: 0 18px 42px rgba(124, 106, 255, 0.18), inset 0 0 28px rgba(255,255,255,0.06);
+      animation: markFloat 4.5s ease-in-out infinite;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .brand-mark::before {
+      content: '';
+      position: absolute;
+      inset: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .brand-mark svg {
+      width: 42px;
+      height: 42px;
+      display: block;
+      position: relative;
+      z-index: 1;
+    }
+
+    .brand-wordmark {
+      display: flex;
+      flex-direction: column;
+      line-height: 1;
+    }
+
+    .brand-wordmark .logo {
+      font-size: 1.9rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(130deg, #ffffff 0%, #b5a9ff 30%, #7c6aff 55%, #f4e7ff 78%, #ffffff 100%);
+      background-size: 180% 180%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 30px rgba(120, 100, 255, 0.4);
+      animation: headerGlow 4s ease-in-out infinite alternate;
+    }
+
+    .brand-wordmark .logo-sub {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.44rem;
+      text-transform: uppercase;
+      color: #aaa8d8;
+      margin-top: 4px;
+      margin-left: 2px;
+      opacity: 0.85;
+    }
+
+    @keyframes headerGlow {
+      0% {
+        background-position: 0% 50%;
+        filter: drop-shadow(0 0 8px rgba(124, 106, 255, 0.35));
+      }
+      100% {
+        background-position: 100% 50%;
+        filter: drop-shadow(0 0 18px rgba(124, 106, 255, 0.7));
+      }
+    }
+
+    @keyframes markFloat {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-4px); }
+    }
+
+    nav {
+      display: flex;
+      gap: 40px;
+      align-items: center;
+      font-weight: 500;
+    }
+
+    nav a {
+      color: #cbd5e1;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: all 0.2s;
+      letter-spacing: 0.3px;
+      border-bottom: 1px solid transparent;
+      padding-bottom: 3px;
+    }
+
+    nav a:hover {
+      color: white;
+      border-bottom-color: #7c6aff;
+    }
+
+    .nav-toggle {
+      display: none;
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.03);
+      color: white;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .nav-toggle span,
+    .nav-toggle span::before,
+    .nav-toggle span::after {
+      position: absolute;
+      width: 20px;
+      height: 2px;
+      background: white;
+      content: '';
+      border-radius: 2px;
+      transition: all 0.25s ease;
+    }
+
+    .nav-toggle span::before {
+      transform: translateY(-6px);
+    }
+
+    .nav-toggle span::after {
+      transform: translateY(6px);
+    }
+
+    .nav-toggle.active span {
+      background: transparent;
+    }
+
+    .nav-toggle.active span::before {
+      transform: rotate(45deg);
+    }
+
+    .nav-toggle.active span::after {
+      transform: rotate(-45deg);
+    }
+
+    /* buttons */
+    .btn-hire {
+      background: linear-gradient(135deg, #7c6aff, #a77eff);
+      border: none;
+      color: white;
+      font-weight: 700;
+      padding: 14px 34px;
+      border-radius: 60px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      box-shadow: 0 8px 32px rgba(124, 106, 255, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+      transition: all 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      letter-spacing: -0.3px;
+      text-decoration: none;
+      color: white;
+    }
+
+    .btn-hire i {
+      font-size: 1.1rem;
+      transition: transform 0.2s;
+    }
+
+    .btn-hire:hover {
+      transform: scale(1.03);
+      box-shadow: 0 16px 40px rgba(124, 106, 255, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+      background: linear-gradient(135deg, #8b7aff, #b58aff);
+    }
+
+    .btn-hire:hover i {
+      transform: translateX(4px);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: white;
+      padding: 12px 32px;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.25s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      backdrop-filter: blur(6px);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(124, 106, 255, 0.6);
+      transform: translateY(-2px);
+    }
+
+    /* hero */
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 60px 0 80px;
+      flex-wrap: wrap;
+      gap: 50px;
+    }
+
+    .hero-content {
+      flex: 1 1 500px;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #a99eff;
+      border: 1px solid rgba(124, 106, 255, 0.4);
+      padding: 8px 20px;
+      border-radius: 40px;
+      margin-bottom: 28px;
+      background: rgba(124, 106, 255, 0.1);
+      backdrop-filter: blur(8px);
+    }
+
+    .hero h1 {
+      font-size: 4.5rem;
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 .gradient {
+      background: linear-gradient(130deg, #fff, #b5a9ff, #5f4aff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      color: #a2aabc;
+      max-width: 550px;
+      margin-bottom: 40px;
+      font-weight: 400;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 50px;
+      margin-top: 55px;
+      padding-top: 15px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .stat-item {
+      min-width: 120px;
+    }
+
+    .stat-item h3 {
+      font-size: 2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #fff, #c5b9ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .stat-item p {
+      font-size: 0.9rem;
+      color: #8d93a8;
+      margin: 0;
+    }
+
+    .hero-visual {
+      flex: 1 1 400px;
+      position: relative;
+    }
+
+    .visual-card {
+      width: 100%;
+      aspect-ratio: 1/1;
+      border-radius: 40px;
+      background: linear-gradient(145deg, #13131e, #1c1c2e);
+      box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(124, 106, 255, 0.2) inset;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    .visual-card::before {
+      content: '';
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      top: -50%;
+      left: -50%;
+      background: conic-gradient(from 0deg, transparent, #7c6aff, #5f4aff, transparent 30%);
+      animation: rotate 8s linear infinite;
+      opacity: 0.15;
+    }
+
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .visual-card i {
+      font-size: 9rem;
+      color: rgba(255, 255, 255, 0.9);
+      filter: drop-shadow(0 0 30px #7c6aff);
+      z-index: 1;
+    }
+
+    /* page 2 – work previews */
+    .section-title {
+      font-size: 2.8rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+    }
+
+    .section-title span {
+      background: linear-gradient(130deg, #fff, #b5a9ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .work-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 35px;
+      padding: 60px 0 80px;
+    }
+
+    .work-card {
+      background: rgba(20, 20, 32, 0.7);
+      backdrop-filter: blur(10px);
+      border-radius: 32px;
+      padding: 26px 24px 24px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      transition: all 0.3s ease;
+      box-shadow: 0 25px 40px -15px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .work-card:hover {
+      border-color: rgba(124, 106, 255, 0.5);
+      transform: translateY(-8px);
+      box-shadow: 0 35px 60px -15px #5f4aff44, 0 0 0 1px rgba(124, 106, 255, 0.3);
+    }
+
+    .work-preview {
+      width: 100%;
+      height: 210px;
+      border-radius: 24px;
+      background: linear-gradient(145deg, #1b1b2a, #252538);
+      margin-bottom: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05);
+      position: relative;
+      overflow: hidden;
+      padding: 12px;
+    }
+
+    .browser-window {
+      width: 100%;
+      height: 100%;
+      border-radius: 18px;
+      background: rgba(12, 12, 20, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      overflow: hidden;
+      position: relative;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+    }
+
+    .browser-bar {
+      height: 32px;
+      background: rgba(255, 255, 255, 0.04);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .browser-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.35);
+    }
+
+    .browser-dot:nth-child(1) { background: #ff6b6b; }
+    .browser-dot:nth-child(2) { background: #ffd93d; }
+    .browser-dot:nth-child(3) { background: #6ee7b7; }
+
+    .browser-body {
+      height: calc(100% - 32px);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .mock-hero {
+      height: 80px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(124, 106, 255, 0.32), rgba(42, 196, 255, 0.18));
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mock-hero::before {
+      content: '';
+      position: absolute;
+      inset: 18px 16px auto auto;
+      width: 100px;
+      height: 40px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .mock-row {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .mock-product {
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(124, 106, 255, 0.12));
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mock-product::before {
+      content: '';
+      position: absolute;
+      inset: 18px 22px 22px 22px;
+      border-radius: 14px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.02));
+    }
+
+    .mock-side {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .mini-stat {
+      flex: 1;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.04);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mini-stat::before {
+      content: '';
+      position: absolute;
+      left: 10px;
+      right: 10px;
+      bottom: 10px;
+      height: 14px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #7c6aff 0%, #4cc9f0 100%);
+      opacity: 0.8;
+    }
+
+    .social-grid {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      padding: 10px;
+    }
+
+    .social-card {
+      border-radius: 12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(124,106,255,0.12));
+      position: relative;
+      overflow: hidden;
+    }
+
+    .social-card::before {
+      content: '';
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+      height: 18px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #ff8fab, #7c6aff, #5de4d1);
+      opacity: 0.85;
+    }
+
+    .phone-shell {
+      width: 115px;
+      height: 150px;
+      background: rgba(10, 10, 17, 0.95);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 22px;
+      padding: 12px 10px 10px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.28);
+      position: relative;
+    }
+
+    .phone-shell::before {
+      content: '';
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      width: 46px;
+      height: 6px;
+      transform: translateX(-50%);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.16);
+    }
+
+    .phone-screen {
+      width: 100%;
+      height: 100%;
+      border-radius: 16px;
+      background: linear-gradient(180deg, rgba(124, 106, 255, 0.25), rgba(255,255,255,0.04));
+      padding: 18px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .phone-pill,
+    .phone-bar {
+      background: rgba(255,255,255,0.12);
+      border-radius: 999px;
+    }
+
+    .phone-pill {
+      height: 14px;
+      width: 70%;
+    }
+
+    .phone-bar {
+      height: 12px;
+      width: 100%;
+    }
+
+    .phone-graph {
+      flex: 1;
+      border-radius: 10px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(124,106,255,0.16));
+      position: relative;
+      overflow: hidden;
+    }
+
+    .phone-graph::before {
+      content: '';
+      position: absolute;
+      left: 10px;
+      right: 10px;
+      bottom: 10px;
+      height: 50%;
+      background: linear-gradient(180deg, rgba(93,228,209,0.8), rgba(124,106,255,0.8));
+      clip-path: polygon(0 100%, 18% 70%, 34% 77%, 50% 45%, 64% 60%, 82% 28%, 100% 10%, 100% 100%);
+    }
+
+    .work-card:hover .work-preview i {
+      transform: scale(1.15);
+    }
+
+    .work-card h3 {
+      font-size: 1.7rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+    }
+
+    .work-card p {
+      color: #9aa2b5;
+      margin-bottom: 22px;
+      font-size: 1rem;
+      flex: 1;
+    }
+
+    .work-tags {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .work-tags span {
+      background: rgba(124, 106, 255, 0.12);
+      color: #b7adff;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 6px 16px;
+      border-radius: 40px;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+      border: 1px solid rgba(124, 106, 255, 0.2);
+    }
+
+    .work-link {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1rem;
+      transition: all 0.2s;
+      border-bottom: 1px solid transparent;
+      padding-bottom: 2px;
+      align-self: flex-start;
+    }
+
+    .work-link i {
+      transition: transform 0.2s;
+    }
+
+    .work-link:hover {
+      color: #c5b9ff;
+      border-bottom-color: #7c6aff;
+    }
+
+    .work-link:hover i {
+      transform: translateX(6px);
+    }
+
+    .case-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(8, 8, 14, 0.8);
+      backdrop-filter: blur(10px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 30;
+      padding: 24px;
+    }
+
+    .case-modal.show {
+      display: flex;
+    }
+
+    .case-modal-inner {
+      width: min(760px, 100%);
+      background: linear-gradient(180deg, rgba(19, 19, 31, 0.96), rgba(12, 12, 20, 0.96));
+      border: 1px solid rgba(124, 106, 255, 0.25);
+      border-radius: 30px;
+      box-shadow: 0 40px 80px rgba(0, 0, 0, 0.45);
+      padding: 30px 30px 24px;
+      position: relative;
+    }
+
+    .case-close {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.04);
+      color: white;
+      font-size: 1.6rem;
+      cursor: pointer;
+    }
+
+    .case-tag {
+      display: inline-flex;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(124, 106, 255, 0.14);
+      border: 1px solid rgba(124, 106, 255, 0.35);
+      color: #d5ccff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .case-modal-inner h3 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.1;
+      margin-bottom: 14px;
+      letter-spacing: -0.03em;
+    }
+
+    .case-modal-inner p {
+      color: #a7afc2;
+      font-size: 1.05rem;
+      margin-bottom: 24px;
+    }
+
+    .case-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 20px;
+    }
+
+    .case-metric {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 18px;
+      padding: 18px 16px;
+    }
+
+    .case-metric strong {
+      display: block;
+      font-size: 1.7rem;
+      background: linear-gradient(135deg, #fff, #b5a9ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 6px;
+    }
+
+    .case-metric span {
+      color: #8e98ad;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* contact footer */
+    .contact-section {
+      background: rgba(15, 15, 25, 0.7);
+      backdrop-filter: blur(12px);
+      border-radius: 50px;
+      padding: 60px 50px;
+      margin: 60px 0 70px;
+      border: 1px solid rgba(124, 106, 255, 0.15);
+      box-shadow: 0 30px 60px -20px #00000080, 0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+      text-align: center;
+    }
+
+    .contact-section h2 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+      letter-spacing: -0.02em;
+    }
+
+    .contact-section p {
+      color: #a2aabc;
+      max-width: 600px;
+      margin: 0 auto 40px;
+      font-size: 1.2rem;
+    }
+
+    .contact-methods {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+      margin: 50px 0 20px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.02);
+      padding: 12px 30px;
+      border-radius: 60px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      transition: all 0.2s;
+      color: #eaeef2;
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+
+    .contact-item i {
+      font-size: 1.5rem;
+      color: #a99eff;
+    }
+
+    .contact-item:hover {
+      background: rgba(124, 106, 255, 0.1);
+      border-color: #7c6aff;
+      transform: translateY(-3px);
+    }
+
+    /* footer bottom */
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 30px 0 40px;
+      color: #6f7587;
+      font-size: 0.9rem;
+      flex-wrap: wrap;
+      gap: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .social-links {
+      display: flex;
+      gap: 26px;
+    }
+
+    .social-links a {
+      color: #8d93a8;
+      font-size: 1.3rem;
+      transition: all 0.2s;
+    }
+
+    .social-links a:hover {
+      color: #b5a9ff;
+      transform: scale(1.15);
+    }
+
+    /* page switching logic */
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    /* responsiveness */
+    @media (max-width: 1100px) {
+      .hero {
+        gap: 30px;
+      }
+
+      .hero-content,
+      .hero-visual {
+        flex-basis: 100%;
+      }
+
+      .hero-visual {
+        max-width: 500px;
+        margin: 0 auto;
+      }
+    }
+
+    @media (max-width: 800px) {
+      .hero h1 {
+        font-size: 3rem;
+      }
+      .hero {
+        padding: 30px 0 50px;
+      }
+      header {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+      nav {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 18px;
+        padding: 20px 18px;
+        margin-top: 10px;
+        background: rgba(18, 18, 28, 0.9);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 18px;
+      }
+      nav.open {
+        display: flex;
+      }
+      .nav-toggle {
+        display: inline-flex;
+      }
+      .contact-section {
+        padding: 40px 24px;
+      }
+      .contact-section h2 {
+        font-size: 2rem;
+      }
+      .contact-methods {
+        flex-direction: column;
+        align-items: center;
+        gap: 18px;
+      }
+      .contact-item {
+        width: 100%;
+        justify-content: center;
+      }
+      .btn-hire {
+        padding: 12px 26px;
+        font-size: 1rem;
+      }
+      .hero-stats {
+        gap: 25px;
+      }
+      .visual-card i {
+        font-size: 6rem;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .brand {
+        gap: 10px;
+      }
+
+      .brand-mark {
+        width: 52px;
+        height: 52px;
+      }
+
+      .brand-mark svg {
+        width: 34px;
+        height: 34px;
+      }
+
+      .brand-wordmark .logo {
+        font-size: 1.45rem;
+      }
+
+      .brand-wordmark .logo-sub {
+        letter-spacing: 0.2rem;
+        font-size: 0.62rem;
+      }
+
+      .hero-stats {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .stat-item {
+        min-width: 0;
+      }
+
+      .stat-item h3 {
+        font-size: 1.5rem;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .hero-actions a,
+      .btn-hire {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .hero h1 {
+        font-size: 2.3rem;
+      }
+      nav {
+        padding: 18px 14px;
+      }
+      nav a {
+        width: 100%;
+      }
+      .section-title {
+        font-size: 2rem;
+      }
+      .container {
+        padding: 0 18px;
+      }
+      .work-grid {
+        gap: 20px;
+      }
+      .contact-item {
+        padding: 12px 18px;
+        font-size: 0.95rem;
+      }
+      .footer-bottom {
+        justify-content: center;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-glow"></div>
+
+  <div class="container">
+    <!-- HEADER: logo + navigation + hire button -->
+    <header>
+      <div class="brand" aria-label="Aseel Studio logo" role="img">
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="asGradient" x1="0%" x2="100%" y1="0%" y2="100%">
+                <stop offset="0%" stop-color="#ffffff"/>
+                <stop offset="28%" stop-color="#e8e1ff"/>
+                <stop offset="62%" stop-color="#9d8fff"/>
+                <stop offset="100%" stop-color="#67d9cb"/>
+              </linearGradient>
+            </defs>
+            <path d="M24 75L50 20L76 75" fill="none" stroke="url(#asGradient)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M36 55H64" fill="none" stroke="url(#asGradient)" stroke-width="7" stroke-linecap="round"/>
+            <path d="M68 29C60 22 47 21 39 25C31 30 31 38 38 42C47 47 63 49 69 56C74 61 73 72 64 77C55 82 41 82 31 76" fill="none" stroke="url(#asGradient)" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="brand-wordmark">
+          <span class="logo">ASEEL</span>
+          <span class="logo-sub">STUDIO</span>
+        </div>
+      </div>
+      <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span>
+      </button>
+      <nav id="mainNav">
+        <a href="#" data-page="home" class="nav-link active">Home</a>
+        <a href="#" data-page="work" class="nav-link">Work</a>
+        <a href="#" class="btn-hire" id="hireBtnHeader">
+          <i class="fas fa-bolt"></i> Hire Me
+        </a>
+      </nav>
+    </header>
+
+    <!-- PAGE 1: HOME -->
+    <div id="homePage" class="page active">
+      <section class="hero">
+        <div class="hero-content">
+          <div class="hero-badge">
+            <i class="fas fa-code"></i> Web designer & developer
+          </div>
+          <h1>
+            <span class="gradient">Aseel Studio</span><br>
+            builds digital presence.
+          </h1>
+          <p>
+            High-end web development, social media growth, and branding that gets you noticed. 
+            Let's turn your vision into a stunning online reality.
+          </p>
+          <div class="hero-actions">
+            <a href="#" class="btn-hire" id="hireBtnHero">
+              <i class="fas fa-paper-plane"></i> Hire Me
+            </a>
+            <a href="#" class="btn-secondary" data-page="work" id="viewWorkBtn">
+              <i class="fas fa-eye"></i> View Work
+            </a>
+          </div>
+          <div class="hero-stats">
+            <div class="stat-item">
+              <h3 class="count-up" data-target="50" data-suffix="+">0</h3>
+              <p>Projects delivered</p>
+            </div>
+            <div class="stat-item">
+              <h3 class="count-up" data-target="100" data-suffix="%">0</h3>
+              <p>Client satisfaction</p>
+            </div>
+            <div class="stat-item">
+              <h3 class="count-up" data-target="24" data-suffix="/7">0</h3>
+              <p>Support</p>
+            </div>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="visual-card">
+            <i class="fas fa-laptop-code"></i>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- PAGE 2: WORK / PORTFOLIO -->
+    <div id="workPage" class="page">
+      <div style="padding-top: 20px;">
+        <h2 class="section-title"><span>Selected Work</span> — live previews</h2>
+        <p style="color:#9aa2b5; max-width: 600px; font-size: 1.15rem;">
+          Real projects that blend design, code, and strategy. Here’s a glimpse of what we can create together.
+        </p>
+      </div>
+
+      <div class="work-grid">
+        <div class="work-card" data-case="luxury">
+          <div class="work-preview">
+            <div class="browser-window">
+              <div class="browser-bar">
+                <span class="browser-dot"></span>
+                <span class="browser-dot"></span>
+                <span class="browser-dot"></span>
+              </div>
+              <div class="browser-body">
+                <div class="mock-hero"></div>
+                <div class="mock-row">
+                  <div class="mock-product"></div>
+                  <div class="mock-side">
+                    <div class="mini-stat"></div>
+                    <div class="mini-stat"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <h3>Luxury Brand E‑commerce</h3>
+          <p>Premium online storefront with product storytelling, conversion-focused sections, and a seamless checkout flow.</p>
+          <div class="work-tags">
+            <span>UI/UX</span>
+            <span>React</span>
+            <span>Shopify</span>
+          </div>
+          <a href="#" class="work-link">Live preview <i class="fas fa-arrow-right"></i></a>
+        </div>
+
+        <div class="work-card" data-case="growth">
+          <div class="work-preview">
+            <div class="browser-window">
+              <div class="browser-bar">
+                <span class="browser-dot"></span>
+                <span class="browser-dot"></span>
+                <span class="browser-dot"></span>
+              </div>
+              <div class="browser-body">
+                <div class="social-grid">
+                  <div class="social-card"></div>
+                  <div class="social-card"></div>
+                  <div class="social-card"></div>
+                  <div class="social-card"></div>
+                  <div class="social-card"></div>
+                  <div class="social-card"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <h3>Social Growth Dashboard</h3>
+          <p>Instagram and TikTok reporting system with engagement growth insights, content tracking, and campaign optimization.</p>
+          <div class="work-tags">
+            <span>Growth</span>
+            <span>Analytics</span>
+            <span>Social</span>
+          </div>
+          <a href="#" class="work-link">Live preview <i class="fas fa-arrow-right"></i></a>
+        </div>
+
+        <div class="work-card" data-case="reels">
+          <div class="work-preview">
+            <div class="browser-window">
+              <div class="browser-bar">
+                <span class="browser-dot"></span>
+                <span class="browser-dot"></span>
+                <span class="browser-dot"></span>
+              </div>
+              <div class="browser-body">
+                <div class="mock-hero" style="height: 72px;"></div>
+                <div class="mock-row" style="grid-template-columns: 1fr 1fr;">
+                  <div class="mock-product" style="background: linear-gradient(135deg, rgba(255, 143, 171, 0.18), rgba(124, 106, 255, 0.12));"></div>
+                  <div class="mock-side">
+                    <div class="mini-stat" style="background: rgba(255, 143, 171, 0.12);"></div>
+                    <div class="mini-stat" style="background: rgba(93, 228, 209, 0.12);"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <h3>Reels Campaign System</h3>
+          <p>Short-form content strategy, creator direction, and social assets that boosted reach, saves, and conversions.</p>
+          <div class="work-tags">
+            <span>Branding</span>
+            <span>Reels</span>
+            <span>Growth</span>
+          </div>
+          <a href="#" class="work-link">Live preview <i class="fas fa-arrow-right"></i></a>
+        </div>
+
+        <div class="work-card" data-case="fitness">
+          <div class="work-preview">
+            <div class="phone-shell">
+              <div class="phone-screen">
+                <div class="phone-pill"></div>
+                <div class="phone-bar"></div>
+                <div class="phone-graph"></div>
+              </div>
+            </div>
+          </div>
+          <h3>Fitness App UX</h3>
+          <p>Cross-platform onboarding and retention design built for a wellness brand with a sleek, behavior-driven interface.</p>
+          <div class="work-tags">
+            <span>Flutter</span>
+            <span>UX</span>
+            <span>Retention</span>
+          </div>
+          <a href="#" class="work-link">Live preview <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+
+      <!-- CTA section inside work page -->
+      <div class="contact-section" style="margin-top: 10px;">
+        <h2>Ready to start your project?</h2>
+        <p>Let’s create something extraordinary. Reach out and let's talk about your next big idea.</p>
+        <a href="#" class="btn-hire" id="hireBtnWork" style="font-size:1.2rem; padding: 16px 44px;">
+          <i class="fas fa-rocket"></i> Hire Me Now
+        </a>
+      </div>
+    </div>
+
+    <div class="case-modal" id="caseModal" aria-hidden="true">
+      <div class="case-modal-inner" role="dialog" aria-modal="true" aria-labelledby="caseTitle">
+        <button class="case-close" type="button" aria-label="Close case study">×</button>
+        <div class="case-tag" id="caseTag">Case Study</div>
+        <h3 id="caseTitle">Project Overview</h3>
+        <p id="caseSummary">Detailed strategy and execution behind a high-impact digital project.</p>
+        <div class="case-metrics">
+          <div class="case-metric">
+            <strong id="metricOne">0%</strong>
+            <span id="metricOneLabel">Growth</span>
+          </div>
+          <div class="case-metric">
+            <strong id="metricTwo">0</strong>
+            <span id="metricTwoLabel">Leads</span>
+          </div>
+          <div class="case-metric">
+            <strong id="metricThree">0</strong>
+            <span id="metricThreeLabel">Timeline</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTACT / FOOTER (shared) -->
+    <div class="contact-section" id="contactSection">
+      <h2>Let’s work together</h2>
+      <p>I’m just one message away. Get in touch and let’s elevate your brand.</p>
+      <div class="contact-methods">
+        <a href="https://wa.me/249996113328" target="_blank" class="contact-item">
+          <i class="fab fa-whatsapp"></i> +249 996 113 328
+        </a>
+        <a href="mailto:aseeladam116@gmail.com" class="contact-item">
+          <i class="fas fa-envelope"></i> aseeladam116@gmail.com
+        </a>
+        <a href="https://instagram.com/aseelstudio" target="_blank" class="contact-item">
+          <i class="fab fa-instagram"></i> @aseelstudio
+        </a>
+      </div>
+      <div style="margin-top: 45px;">
+        <a href="#" class="btn-hire" id="hireBtnContact" style="padding: 18px 48px; font-size: 1.2rem;">
+          <i class="fas fa-handshake"></i> Hire Me
+        </a>
+      </div>
+    </div>
+
+    <!-- FOOTER BOTTOM -->
+    <div class="footer-bottom">
+      <div>© 2025 Aseel Studio — Web design & socials</div>
+      <div class="social-links">
+        <a href="https://instagram.com/aseelstudio" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://wa.me/249996113328" target="_blank"><i class="fab fa-whatsapp"></i></a>
+        <a href="mailto:aseeladam116@gmail.com"><i class="fas fa-envelope"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const pages = {
+      home: document.getElementById('homePage'),
+      work: document.getElementById('workPage')
+    };
+
+    const mainNav = document.getElementById('mainNav');
+    const navToggle = document.querySelector('.nav-toggle');
+
+    const caseStudies = {
+      luxury: {
+        tag: 'Luxury e-commerce',
+        title: 'Luxury Brand E-commerce Experience',
+        summary: 'We redesigned the storefront, sharpened the product narrative, and built a premium online journey that focused on trust, clarity, and conversion at every touchpoint.',
+        metricOne: '3.2x',
+        metricOneLabel: 'Higher conversions',
+        metricTwo: '18k+',
+        metricTwoLabel: 'Monthly visitors',
+        metricThree: '6 weeks',
+        metricThreeLabel: 'Project timeline'
+      },
+      growth: {
+        tag: 'Social Growth',
+        title: 'Instagram & TikTok Growth Dashboard',
+        summary: 'We built a focused analytics system that exposed the content patterns driving engagement and helped teams turn raw audience data into a repeatable growth engine.',
+        metricOne: '240%',
+        metricOneLabel: 'Engagement growth',
+        metricTwo: '42%',
+        metricTwoLabel: 'Follower lift',
+        metricThree: '30 days',
+        metricThreeLabel: 'To results'
+      },
+      reels: {
+        tag: 'Reels Strategy',
+        title: 'Short-form Content Campaign System',
+        summary: 'The campaign merged content strategy, creator direction, and conversion-focused hooks into a scalable system designed for faster audience growth and stronger retention.',
+        metricOne: '4.8x',
+        metricOneLabel: 'Reach uplift',
+        metricTwo: '63%',
+        metricTwoLabel: 'Save rate growth',
+        metricThree: '8 weeks',
+        metricThreeLabel: 'Execution cycle'
+      },
+      fitness: {
+        tag: 'App UX',
+        title: 'Fitness App Retention Design',
+        summary: 'We simplified onboarding, clarified personalization, and built a clean retention flow that helped users stay motivated and return consistently to the app.',
+        metricOne: '71%',
+        metricOneLabel: 'Retention lift',
+        metricTwo: '2.4x',
+        metricTwoLabel: 'Activation boost',
+        metricThree: '4 weeks',
+        metricThreeLabel: 'Design sprint'
+      }
+    };
+
+    function setActivePage(pageId) {
+      Object.values(pages).forEach((page) => page.classList.remove('active'));
+
+      if (pages[pageId]) {
+        pages[pageId].classList.add('active');
+      }
+
+      document.querySelectorAll('.nav-link').forEach((link) => {
+        link.classList.toggle('active', link.dataset.page === pageId);
+      });
+
+      if (window.innerWidth <= 800 && mainNav) {
+        mainNav.classList.remove('open');
+      }
+
+      if (navToggle) {
+        navToggle.classList.remove('active');
+        navToggle.setAttribute('aria-expanded', 'false');
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function hireAction(event) {
+      if (event) event.preventDefault();
+      const message = encodeURIComponent('Hi Aseel, I would like to hire you for a project. Let\'s discuss the details.');
+      window.open(`https://wa.me/249996113328?text=${message}`, '_blank');
+    }
+
+    function animateCount(element) {
+      const target = Number(element.dataset.target || 0);
+      const suffix = element.dataset.suffix || '';
+      const duration = 1200;
+      const start = performance.now();
+
+      function update(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const value = Math.round(target * eased);
+        element.textContent = value + suffix;
+
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        } else {
+          element.textContent = target + suffix;
+        }
+      }
+
+      requestAnimationFrame(update);
+    }
+
+    function showCaseStudy(key) {
+      const modal = document.getElementById('caseModal');
+      const study = caseStudies[key];
+      if (!modal || !study) return;
+
+      document.getElementById('caseTag').textContent = study.tag;
+      document.getElementById('caseTitle').textContent = study.title;
+      document.getElementById('caseSummary').textContent = study.summary;
+      document.getElementById('metricOne').textContent = study.metricOne;
+      document.getElementById('metricOneLabel').textContent = study.metricOneLabel;
+      document.getElementById('metricTwo').textContent = study.metricTwo;
+      document.getElementById('metricTwoLabel').textContent = study.metricTwoLabel;
+      document.getElementById('metricThree').textContent = study.metricThree;
+      document.getElementById('metricThreeLabel').textContent = study.metricThreeLabel;
+
+      modal.classList.add('show');
+      modal.setAttribute('aria-hidden', 'false');
+    }
+
+    function hideCaseStudy() {
+      const modal = document.getElementById('caseModal');
+      if (!modal) return;
+      modal.classList.remove('show');
+      modal.setAttribute('aria-hidden', 'true');
+    }
+
+    if (navToggle) {
+      navToggle.addEventListener('click', () => {
+        const isOpen = mainNav.classList.toggle('open');
+        navToggle.classList.toggle('active', isOpen);
+        navToggle.setAttribute('aria-expanded', String(isOpen));
+      });
+    }
+
+    document.addEventListener('click', (event) => {
+      const pageLink = event.target.closest('[data-page]');
+      if (pageLink) {
+        event.preventDefault();
+        const pageId = pageLink.dataset.page;
+        if (pageId) setActivePage(pageId);
+      }
+
+      const workLink = event.target.closest('.work-link');
+      if (workLink) {
+        event.preventDefault();
+        const card = workLink.closest('.work-card');
+        const caseKey = card ? card.dataset.case : null;
+        if (caseKey) showCaseStudy(caseKey);
+      }
+
+      const closeButton = event.target.closest('.case-close');
+      if (closeButton) hideCaseStudy();
+
+      const modal = document.getElementById('caseModal');
+      if (modal && event.target === modal) hideCaseStudy();
+    });
+
+    document.querySelectorAll('.btn-hire').forEach((button) => {
+      button.addEventListener('click', hireAction);
+    });
+
+    document.querySelector('.logo').addEventListener('click', (event) => {
+      event.preventDefault();
+      setActivePage('home');
+    });
+
+    document.querySelectorAll('.count-up').forEach((element) => {
+      animateCount(element);
+    });
+
+    setActivePage('home');
+    console.log('Aseel Studio — ready to impress');
+  </script>
+</body>
+</html>
